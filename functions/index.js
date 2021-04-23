@@ -27,7 +27,7 @@ app.get('/pets', (req, res) => {
     .catch((err) => res.status(500).send('Error getting pets' + err.message))
 })
 
-app.get('/pets', (req, res) => {
+app.post('/pets', (req, res) => {
   connectToFb()
   const newPet = req.body
   db.collection('pets')
@@ -36,7 +36,7 @@ app.get('/pets', (req, res) => {
     .catch((err) => res.status(500).send('Error adding pets' + err.message))
 })
 
-app.post('/pets', (req, res) => {
+app.patch('/pets', (req, res) => {
   connectToFb()
   const changePet = req.body
     .update(changePet)
@@ -53,3 +53,5 @@ app.delete('/pets', (req, res) => {
     .then(() => this.allPets(req, res))
     .catch((err) => res.status(500).send('Error deleting pet' + err.message))
 })
+
+exports.app = functions.https.onRequest(app)
