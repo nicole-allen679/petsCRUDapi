@@ -1,5 +1,6 @@
 const admin = require('firebase-admin')
 const functions = require('firebase-functions')
+const express = require('express')
 const app = express()
 const serviceAccount = require('./credentials')
 
@@ -21,12 +22,12 @@ app.get('/pets', (req, res) => {
     .then((allPets) => {
       const arrayOfPets = []
       allPets.forEach((pet) => arrayOfPets.push(pet.data()))
-      res.send(allPets)
     })
+    res.send(allPets)
     .catch((err) => res.status(500).send('Error getting pets' + err.message))
 })
 
-app.add('/pets', (req, res) => {
+app.get('/pets', (req, res) => {
   connectToFb()
   const newPet = req.body
   db.collection('pets')
@@ -35,7 +36,7 @@ app.add('/pets', (req, res) => {
     .catch((err) => res.status(500).send('Error adding pets' + err.message))
 })
 
-app.update('/pets', (req, res) => {
+app.post('/pets', (req, res) => {
   connectToFb()
   const changePet = req.body
     .update(changePet)
